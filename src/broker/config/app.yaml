@@ -1,0 +1,18 @@
+host: localhost
+port: 7777
+timeout: 300
+
+grpcPort: 50051
+
+brokers:
+- id: 1
+  name: Forex
+
+- id: 2
+  name: Not Forex
+
+tickers:
+- id: 1
+  name: RIM7
+- id: 2
+  name: SPFB.Si-6.17

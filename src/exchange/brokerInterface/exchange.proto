@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package BrokerExcangeInterface;
+
+// Interface exported by the server.
+service BrokerExcangeInterface {
+  // A client-to-server streaming RPC.
+  // New transaction requests from clients 
+  // should be sent to exchange by broker through this channel
+  rpc SendTransactionRequestStream(stream TransactionRequestType) returns (Status) {}
+  
+  // A server-to-client streaming RPC.
+  // Transaction results from the exchange 
+  // should be sent back to clients through this channel 
+  rpc GetTransactionResultStream(Broker) returns (stream TransactionRequestType) {}
+  
+  // A server-to-client streaming RPC.
+  // Send statistics to brocker evry second
+  // To get statistics send BrockerID
+  rpc GetStatistics(Broker) returns (stream StatisticsType) {}
+}
+
+message TransactionRequestType {
+    int32 OrderID = 1;
+    int32 BrokerID = 2;
+    int32 ClientID = 3;
+    string Ticker = 4;
+    int32 Amount = 5;
+    bool Partial = 6;
+    int32 Time = 7;
+    float Price = 8;
+    string TransactionType = 9;
+    string Action = 10;
+    int32 Status = 11;
+}
+
+message OHLCV {
+  int64 ID = 1;
+  int32 Time = 2;
+  int32 Interval = 3;
+  float Open = 4;
+  float High = 5;
+  float Low = 6;
+  float Close = 7;
+  string Ticker = 8;
+}
+
+message StatisticsType {
+  map<string, OHLCV> Ticker = 1;
+}
+
+message Broker {
+  int32 BrokerID = 1;
+}
+
+message Status {
+  int32 Status = 1;
+}
